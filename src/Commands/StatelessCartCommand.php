@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\Skeleton\Commands;
+namespace Webtamizhan\StatelessCart\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class StatelessCartCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'stateless-cart';
 
     public $description = 'My command';
 

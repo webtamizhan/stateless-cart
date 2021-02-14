@@ -1,16 +1,16 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "webtamizhan/stateless-cart",
+    "description": "Laravel Stateless Cart System for Web & API",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "webtamizhan",
+        "stateless-cart"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/webtamizhan/stateless-cart",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "Prabakaran T",
+            "email": "mailtodecipher@gmail.com",
             "role": "Developer"
         }
     ],
@@ -27,13 +27,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src",
-            "Spatie\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Webtamizhan\\StatelessCart\\": "src",
+            "Webtamizhan\\StatelessCart\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "Webtamizhan\\StatelessCart\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -47,10 +47,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "Webtamizhan\\StatelessCart\\StatelessCartServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "StatelessCart": "Webtamizhan\\StatelessCart\\StatelessCartFacade"
             }
         }
     },

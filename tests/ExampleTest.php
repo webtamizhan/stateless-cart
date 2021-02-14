@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Webtamizhan\StatelessCart\Tests;
 
 class ExampleTest extends TestCase
 {
