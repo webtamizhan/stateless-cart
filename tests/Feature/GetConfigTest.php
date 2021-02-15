@@ -3,12 +3,10 @@
 
 namespace Webtamizhan\StatelessCart\Tests\Feature;
 
-
 use Webtamizhan\StatelessCart\Tests\TestCase;
 
 class GetConfigTest extends TestCase
 {
-
     /**
      * @test
      */
@@ -16,9 +14,8 @@ class GetConfigTest extends TestCase
     {
         $config = config('stateless-cart.database.connection');
 
-        $this->assertEquals(null,$config);
+        $this->assertEquals(null, $config);
     }
-
 
     /**
      * @test

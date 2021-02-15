@@ -37,6 +37,7 @@ class StatelessCart
         if (empty($this->user_id)) {
             throw new AuthenticationUserException("Unable to find the authenticated user!");
         }
+
         return $this;
     }
 
@@ -49,13 +50,13 @@ class StatelessCart
         if ($this->user_id) {
             $contents = DB::table(config('stateless-cart.database.table'))->where('user_id', $this->user_id)
                 ->first();
-            if (!$contents) {
+            if (! $contents) {
                 return new Collection();
             }
             $stored_items = unserialize($contents->items);
         } else {
             $stored_items = session()->get($this->cartSessionName);
-            if (!$stored_items) {
+            if (! $stored_items) {
                 $stored_items = new Collection();
             }
         }
@@ -74,7 +75,9 @@ class StatelessCart
      */
     private function isMulti($item)
     {
-        if (!is_array($item)) return false;
+        if (! is_array($item)) {
+            return false;
+        }
 
         return is_array(head($item));
     }
@@ -89,7 +92,7 @@ class StatelessCart
      *
      * @return \App\Service\CartItem|\App\Service\CartItem[]
      */
-    function add($id, $name = null, $qty = null, $price = null, array $options = [])
+    public function add($id, $name = null, $qty = null, $price = null, array $options = [])
     {
         if ($this->isMulti($id)) {
             return array_map(function ($item) {
@@ -116,22 +119,23 @@ class StatelessCart
         $checkExist = DB::table(config('stateless-cart.database.table'))
             ->where('user_id', $this->user_id)
             ->first();
-        if (!$checkExist) {
+        if (! $checkExist) {
             DB::table(config('stateless-cart.database.table'))->insert([
                 'user_id' => $this->user_id,
                 'items' => serialize($content),
-                'created_at' => date("Y-m-d H:i:s")
+                'created_at' => date("Y-m-d H:i:s"),
             ]);
         } else {
             DB::table(config('stateless-cart.database.table'))
                 ->where('user_id', $this->user_id)
                 ->update([
                     'items' => serialize($content),
-                    'updated_at' => date("Y-m-d H:i:s")
+                    'updated_at' => date("Y-m-d H:i:s"),
                 ]);
             $sessionItems = $content;
         }
         session()->put($this->cartSessionName, $sessionItems);
+
         return $cartItem;
     }
 
@@ -158,6 +162,7 @@ class StatelessCart
 
         if ($cartItem->qty <= 0) {
             $this->remove($cartItem->rowId);
+
             return;
         }
         $content->put($cartItem->rowId, $cartItem);
@@ -167,10 +172,11 @@ class StatelessCart
                 ->where('user_id', $this->user_id)
                 ->update([
                     'items' => serialize($content),
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
         }
         session()->put($this->cartSessionName, $content);
+
         return $cartItem;
     }
 
@@ -178,7 +184,7 @@ class StatelessCart
      * Get the contents of cart
      * @return \Illuminate\Support\Collection
      */
-    function content()
+    public function content()
     {
         if (is_null($this->getItems())) {
             return new Collection([]);
@@ -272,7 +278,7 @@ class StatelessCart
     {
         $content = $this->getItems();
 
-        if (!$content->has($rowId)) {
+        if (! $content->has($rowId)) {
             return null;
         }
 
@@ -294,7 +300,7 @@ class StatelessCart
         DB::table(config('stateless-cart.database.table'))
             ->where('user_id', $this->user_id)->update([
                 'items' => serialize($content),
-                'updated_at' => date("Y-m-d H:i:s")
+                'updated_at' => date("Y-m-d H:i:s"),
             ]);
         session()->put($this->cartSessionName, $content);
 
@@ -308,21 +314,22 @@ class StatelessCart
     {
         DB::table(config('stateless-cart.database.table'))
             ->where('user_id', $this->user_id)->delete();
+
         return;
     }
 
     public function swapSessionToUserCart()
     {
-        if (!empty($this->user_id) && session()->has($this->cartSessionName)) {
+        if (! empty($this->user_id) && session()->has($this->cartSessionName)) {
             $contents = session()->get($this->cartSessionName);
             $checkExist = DB::table(config('stateless-cart.database.table'))
                 ->where('user_id', $this->user_id)->first();
-            if (!$checkExist) {
+            if (! $checkExist) {
                 DB::table(config('stateless-cart.database.table'))
                     ->insert([
                     'user_id' => $this->user_id,
                     'items' => serialize($contents),
-                    'created_at' => date("Y-m-d H:i:s")
+                    'created_at' => date("Y-m-d H:i:s"),
                 ]);
             } else {
                 $existingContents = unserialize($checkExist->items);
@@ -339,10 +346,11 @@ class StatelessCart
                 DB::table(config('stateless-cart.database.table'))
                     ->where('user_id', $this->user_id)->update([
                     'items' => serialize($newItems),
-                    'updated_at' => date("Y-m-d H:i:s")
+                    'updated_at' => date("Y-m-d H:i:s"),
                 ]);
             }
         }
+
         return;
     }
 }
